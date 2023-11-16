@@ -1,0 +1,7 @@
+// const char* MQTT_BROKER_ADRESS = "XXX.XXX.XXX.XXX";
+// const int   MQTT_PORT = 1883;
+
+// const char* MQTT_CLIENT_NAME = "MY_CLIENT_NAME";
+
+// const char* TOPIC_ESP32_OXIGEN_BINOMIO1   = "MY_TOPIC_1";
+// const char* TOPIC_BRIDGE_BINOMIO1_ACCION1 = "MY_TOPIC_2";

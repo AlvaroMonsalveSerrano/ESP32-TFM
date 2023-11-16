@@ -9,6 +9,8 @@
 lib/
 
 config.h
+config_mqtt.h 
+config_wifi.h
 
 
 app/bin/

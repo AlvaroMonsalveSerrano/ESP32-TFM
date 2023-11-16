@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
 
-
 // /**
 //  * Función charToString transformadora de byte a String.
 //  * 

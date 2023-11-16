@@ -2,49 +2,32 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-#include <config.h>
-#include <MQTT.h>
-#include <utils.h>
+#include "MQTT.h"
+#include "wifi.h"
 
-const int LIMITE_OXIGENO = 100;
+#define LED 17
+#define LIMITE_OXIGENO 100
+
 int value; 
 
-// -----------------------
-//
-// DEFINICIÓN DE FUNCIONES
-//
-// -----------------------
 
-// Función para configurar el puerto Serie.
-void serialConfiguration();
-
-// Función para realizar una conexión a una WiFi.
-void connectToWiFi();
-
-
-
-// ----------------------------
-//
-// IMPLEMENTACIÓN DE FUNCIONES
-//
-// ----------------------------
 
 void setup() {
 
   serialConfiguration();
 
-  // Conexión a una red WiFi.
   connectToWiFi();
 
   initMqtt();
 
   value = LIMITE_OXIGENO;
 
+  pinMode(LED, OUTPUT);
+
 }
 
 void loop() {
 
-  // Handler del protocolo MQTT
   handleMqtt();
 
   // Publicamos un valor.
@@ -55,6 +38,13 @@ void loop() {
   value = value - 1;
   if(value > 0){
     publishStringDataToMqtt(String(value));
+    Serial.print("Oxígeno: ");
+    Serial.print(value);
+    Serial.println();
+
+    if(value <= 80){
+      digitalWrite(LED, HIGH);
+    }
 
   }else{
     Serial.println("BOTELLA VACÍA");
@@ -64,22 +54,4 @@ void loop() {
 
   delay(1000);
 
-}
-
-
-void serialConfiguration(){
-  Serial.begin(115200);
-  while(!Serial){
-    delay(100);
-  }
-}
-
-void connectToWiFi(){
-  WiFi.begin(SSID, PASSWORD);
-
-  while(WiFi.status() != WL_CONNECTED){
-    delay(500);
-  }
-
-  Serial.println("WiFi connected");
 }

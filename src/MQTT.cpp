@@ -1,4 +1,10 @@
-#include <utils.h>
+
+#include <Arduino.h>
+
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+#include "config_mqtt.h"
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
