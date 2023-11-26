@@ -4,18 +4,20 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#include "utils.h"
+#include "EAR.h"
+
 #include "config_mqtt.h"
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 
 String payload = "";
-String content = "";
-
+String accion = "";
 
 
 /**
- * Función suscribeMqtt que realiza la suscripción de a un topic.
+ * La función suscribeMqtt realiza la suscripción de a un topic.
  * 
  */
 void suscribeMqtt(){
@@ -23,58 +25,31 @@ void suscribeMqtt(){
   Serial.println("Subscrito al topic: esp32/binomio1/oxigeno");
 
   mqttClient.subscribe(TOPIC_BRIDGE_BINOMIO1_ACCION1);
-  Serial.println("Subscrito al topic: bridge/binomio1/accion1");
+  Serial.println("Subscrito al topic: app/binomio1/alarm1");
+
+  mqttClient.subscribe(TOPIC_BRIDGE_BINOMIO1_ACCION2);
+  Serial.println("Subscrito al topic: app/binomio1/alarm2");
+
+  mqttClient.subscribe(TOPIC_BRIDGE_BINOMIO1_ACCION3);
+  Serial.println("Subscrito al topic: app/binomio1/alarm3");  
 }
 
+
 /**
- * Función publishLongDataToMqtt que realiza la publicación de un mensaje.
+ * Función publishStringDataToMqtt realiza la publicación de un mensaje.
  * Parámetros:
+ *  topic: const char* .- Nombre del topic del broker MQTT. 
  *  data: unsigned long .- Dato del mensaje a enviar al topic.
  * 
  */
-void publishLongDataToMqtt(unsigned long data){
-  payload = String(data);
-  mqttClient.publish(TOPIC_ESP32_OXIGEN_BINOMIO1, (char*)payload.c_str());
-  Serial.print("Publicado...");
-  Serial.println(payload);
-}
-
 void publishStringDataToMqtt(String data){
   mqttClient.publish(TOPIC_ESP32_OXIGEN_BINOMIO1, (char*)data.c_str());
-  // Serial.print("Publicado...");
-  // Serial.println(data);
 }
 
 
 
 /**
- * Función charToString transformadora de byte a String.
- * 
- */
-String charMsgToString(byte* payload, unsigned int length){
-  String content = "";
-  for (size_t i = 0; i < length; i++) {
-    content.concat((char)payload[i]);
-  }
-
-  return content;    
-}
-
-
-void doEsp32OxigenBinomio(String value){
-  Serial.print(value);
-  Serial.println();
-}
-
-void doBridgeAccion1(String value){
-  Serial.print("Recibido Acción 1: ");
-  Serial.print(value);
-  Serial.println("");  
-}
-
-
-/**
- * Función OnMqttReceived que realiza la recepción de un mensaje desde 
+ * Función OnMqttReceived  realiza la recepción de un mensaje desde 
  * el broker MQTT.
  * 
  */
@@ -82,21 +57,51 @@ void onMqttReceived(char* topic, byte* payload, unsigned int length){
 
   String topicName = String(topic);
 
+
+
   if(topicName == TOPIC_ESP32_OXIGEN_BINOMIO1){
     // No hacemos nada...
     // content = charMsgToString(payload, length);
     // doEsp32OxigenBinomio(content);
 
   } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION1){
-    content = charMsgToString(payload, length);
-    doBridgeAccion1(content);
 
+    Serial.print("Topic: ");
+    Serial.println(topicName);
+
+    accion = charMsgToString(payload, length);
+    Serial.println("Entramos en Accion1...");
+    Serial.println(accion);
+    doBridgeAccion1("ON1");
+
+  } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION2){
+
+    Serial.print("Topic: ");
+    Serial.println(topicName);
+
+    accion = charMsgToString(payload, length);
+    Serial.println("Entramos en Accion2...");
+    Serial.println(accion);
+    doBridgeAccion1("ON2");
+
+  } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION3){
+
+    Serial.print("Topic: ");
+    Serial.println(topicName);
+
+    accion = charMsgToString(payload, length);
+    Serial.println("Entramos en Accion3...");
+    Serial.println(accion);
+    doBridgeAccion1("ON3");
   }
-
 
 }
 
 
+/**
+ * La función initMqtt realiza la configuración de la conexión al broker
+ * MQTT.
+ */
 void initMqtt(){
   Serial.println("Iniciamos MQTT....");
   mqttClient.setServer(MQTT_BROKER_ADRESS, MQTT_PORT);
@@ -111,6 +116,10 @@ void initMqtt(){
 }
 
 
+/**
+ * La función connectMqtt realiza la definición de la conexión al broker
+ * MQTT.
+ */
 void connectMqtt(){
   while (!mqttClient.connected()){
     Serial.print("Iniciada conexión MQTT...");
@@ -127,7 +136,8 @@ void connectMqtt(){
 }
 
 /**
- * 
+ * La función handleMqtt es aquella función de utilidad para definir
+ * las operaciones con el broker MQTT
  */
 void handleMqtt(){
   if (!mqttClient.connected()){
@@ -137,4 +147,7 @@ void handleMqtt(){
 
 }  
 
-
+// A borrar
+void doEARAccion1(String value){
+    doBridgeAccion1(value);
+}  

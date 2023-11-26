@@ -3,13 +3,14 @@
 #include <PubSubClient.h>
 
 #include "MQTT.h"
+#include "EAR.h"
 #include "wifi.h"
 
-#define LED 17
+
 #define LIMITE_OXIGENO 100
 
-int value; 
 
+int value; 
 
 
 void setup() {
@@ -20,20 +21,15 @@ void setup() {
 
   initMqtt();
 
-  value = LIMITE_OXIGENO;
+  setUpPinEAR();
 
-  pinMode(LED, OUTPUT);
+  value = LIMITE_OXIGENO;
 
 }
 
 void loop() {
 
   handleMqtt();
-
-  // Publicamos un valor.
-  // int instante = millis();
-  // Serial.printf("Valor a publicar: %e", instante);
-  //publishLongDataToMqtt(millis());
 
   value = value - 1;
   if(value > 0){
@@ -43,14 +39,14 @@ void loop() {
     Serial.println();
 
     if(value <= 80){
-      digitalWrite(LED, HIGH);
+      // digitalWrite(LED, HIGH);
     }
 
   }else{
     Serial.println("BOTELLA VACÍA");
   }
 
-  // publishStringDataToMqtt(String(millis()));
+  // onSemaphore();
 
   delay(1000);
 

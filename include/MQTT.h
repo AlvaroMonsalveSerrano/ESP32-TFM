@@ -1,27 +1,26 @@
 
-// PubSubClient mqttClient(espClient);
 
 #include <Arduino.h>
 
-void suscribeMqtt();
-
-void publishLongDataToMqtt(unsigned long data);
+// A borrar
+void doEARAccion1(String value);
 
 void publishStringDataToMqtt(String data);
 
-String charMsgToString(byte* payload, unsigned int length);
+// // No tiene sentido aquí.
+// void doEsp32OxigenBinomio(String value);
 
-void doEsp32OxigenBinomio(String value);
-
-void doBridgeAccion1(String value);
-
-void onMqttReceived(char* topic, byte* payload, unsigned int length);
-
+// // No tiene sentido aquí.
+// void doBridgeAccion1(String value);
 
 void initMqtt();
 
 void connectMqtt();
 
 void handleMqtt();
+
+void suscribeMqtt();
+
+void onMqttReceived(char* topic, byte* payload, unsigned int length);
 
 
