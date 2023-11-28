@@ -5,9 +5,16 @@
 #define ALARM2 "ON2"
 #define ALARM3 "ON3"
 
+// Semáforo alarmas
 #define RED 17
 #define YELLOW 16
 #define GREEN 18
+
+// Semáforo de nivel EAR
+#define RED_EAR 0
+#define YELLOW_EAR 2
+#define GREEN_EAR 15
+
 
 /**
  * La función setUpPinEAR define la configuración de los pin para 
@@ -17,12 +24,10 @@ void setUpPinEAR(){
   pinMode(RED, OUTPUT);
   pinMode(YELLOW, OUTPUT);
   pinMode(GREEN, OUTPUT);
-}
 
-void onSemaphore(){
-  digitalWrite(RED, LOW);
-  digitalWrite(YELLOW, LOW);
-  digitalWrite(GREEN, LOW); 
+  pinMode(RED_EAR, OUTPUT);
+  pinMode(YELLOW_EAR, OUTPUT);
+  pinMode(GREEN_EAR, OUTPUT);  
 }
 
 /**
@@ -40,6 +45,7 @@ void doEsp32OxigenBinomio(String value){
  * asociado a la alarma de tipo 1.
  */
 void doBridgeAccion1(String value){
+
   Serial.print("Recibido Acción : ");
   Serial.print(value);
   Serial.println(""); 
@@ -69,6 +75,42 @@ void doBridgeAccion1(String value){
     digitalWrite(GREEN, HIGH);
 
   }
-
  
 }
+
+/**
+ * La función setRedEar activa lus roja del semáforo de nivel.
+ * 
+ */
+void setRedEar(){
+    digitalWrite(RED_EAR, HIGH);
+    digitalWrite(YELLOW_EAR, LOW);
+    digitalWrite(GREEN_EAR, LOW);
+}
+
+/**
+ * La función setYellowEar activa lus roja del semáforo de nivel.
+ * 
+ */
+void setYellowEar(){
+    digitalWrite(RED_EAR, LOW);
+    digitalWrite(YELLOW_EAR, HIGH);
+    digitalWrite(GREEN_EAR, LOW);
+}
+
+/**
+ * La función setGreenEar activa lus roja del semáforo de nivel.
+ * 
+ */
+void setGreenEar(){
+    digitalWrite(RED_EAR, LOW);
+    digitalWrite(YELLOW_EAR, LOW);
+    digitalWrite(GREEN_EAR, HIGH);
+}
+
+void setAllLedEar(){
+    digitalWrite(RED_EAR, HIGH);
+    digitalWrite(YELLOW_EAR, HIGH);
+    digitalWrite(GREEN_EAR, HIGH);  
+}
+

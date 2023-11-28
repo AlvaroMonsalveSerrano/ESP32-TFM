@@ -6,4 +6,9 @@ void doBridgeAccion1(String value);
 
 void setUpPinEAR();
 
-void onSemaphore();
+// void onSemaphore();
+
+void setRedEar();
+void setYellowEar();
+void setGreenEar();
+void setAllLedEar();

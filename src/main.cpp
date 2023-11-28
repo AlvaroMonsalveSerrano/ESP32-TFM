@@ -24,6 +24,25 @@ void setup() {
   setUpPinEAR();
 
   value = LIMITE_OXIGENO;
+  setGreenEar();
+
+}
+
+void setLevelSemaphore(int value){
+
+  if((100 >= value) & (value > 80)){
+    setGreenEar();
+
+  }else if( (80 >= value) & (value > 30)){
+    setYellowEar();
+
+  }else if((30 >= value) & (value > 0)){
+    setRedEar();
+
+  }else{
+    setAllLedEar();
+
+  }
 
 }
 
@@ -34,19 +53,19 @@ void loop() {
   value = value - 1;
   if(value > 0){
     publishStringDataToMqtt(String(value));
-    Serial.print("Oxígeno: ");
+    Serial.print("Oxigeno: ");
     Serial.print(value);
     Serial.println();
 
-    if(value <= 80){
-      // digitalWrite(LED, HIGH);
-    }
+    setLevelSemaphore(value);
 
   }else{
-    Serial.println("BOTELLA VACÍA");
-  }
+    Serial.println("BOTELLA VACÍA");    
+    delay(10000);
+    value = LIMITE_OXIGENO; 
+    setGreenEar();   
 
-  // onSemaphore();
+  }
 
   delay(1000);
 
