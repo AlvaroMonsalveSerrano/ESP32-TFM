@@ -1,9 +1,6 @@
 #include <Arduino.h>
 
-
-#define ALARM1 "ON1"
-#define ALARM2 "ON2"
-#define ALARM3 "ON3"
+#include <utils.h>
 
 // Semáforo alarmas
 #define RED 17
@@ -31,20 +28,10 @@ void setUpPinEAR(){
 }
 
 /**
- * La función  doEsp32OxigenBinomio realiza la funcionalidad asociada a la acción 
- * del envío de uan señal de oxígeno.
+ * La función doBridgeAccion1 realiza la funcionalidad asociada a la acción de 
+ * recepcionar eventos.
  */
-void doEsp32OxigenBinomio(String value){
-  Serial.print(value);
-  Serial.println();
-}
-
-
-/**
- * La función doBridgeAccion1 realiza la funcionalidad asociada a la acción del evento 
- * asociado a la alarma de tipo 1.
- */
-void doBridgeAccion1(String value){
+void doBridgeAccion(String value){
 
   Serial.print("Recibido Acción : ");
   Serial.print(value);
@@ -99,7 +86,7 @@ void setYellowEar(){
 }
 
 /**
- * La función setGreenEar activa lus roja del semáforo de nivel.
+ * La función setGreenEar activa luz roja del semáforo de nivel.
  * 
  */
 void setGreenEar(){
@@ -108,6 +95,10 @@ void setGreenEar(){
     digitalWrite(GREEN_EAR, HIGH);
 }
 
+/**
+ * La función setAllLedEar activa todas las luces del semáforo de nivel.
+ * 
+ */
 void setAllLedEar(){
     digitalWrite(RED_EAR, HIGH);
     digitalWrite(YELLOW_EAR, HIGH);

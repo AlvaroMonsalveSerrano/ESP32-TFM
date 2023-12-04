@@ -6,24 +6,18 @@
 #include "EAR.h"
 #include "wifi.h"
 
-
-#define LIMITE_OXIGENO 100
-
+#define OXIGEN_LIMIT 100
 
 int value; 
 
-
 void setup() {
 
+  value = OXIGEN_LIMIT;
+
   serialConfiguration();
-
   connectToWiFi();
-
   initMqtt();
-
   setUpPinEAR();
-
-  value = LIMITE_OXIGENO;
   setGreenEar();
 
 }
@@ -49,20 +43,19 @@ void setLevelSemaphore(int value){
 void loop() {
 
   handleMqtt();
-
-  value = value - 1;
+  
   if(value > 0){
     publishStringDataToMqtt(String(value));
     Serial.print("Oxigeno: ");
     Serial.print(value);
     Serial.println();
-
     setLevelSemaphore(value);
+    value = value - 1;
 
   }else{
-    Serial.println("BOTELLA VACÍA");    
+    Serial.println("## Botella vacía,proceso de llenado...");    
     delay(10000);
-    value = LIMITE_OXIGENO; 
+    value = OXIGEN_LIMIT; 
     setGreenEar();   
 
   }

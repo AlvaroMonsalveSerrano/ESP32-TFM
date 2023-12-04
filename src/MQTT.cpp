@@ -57,42 +57,32 @@ void onMqttReceived(char* topic, byte* payload, unsigned int length){
 
   String topicName = String(topic);
 
-
-
-  if(topicName == TOPIC_ESP32_OXIGEN_BINOMIO1){
-    // No hacemos nada...
-    // content = charMsgToString(payload, length);
-    // doEsp32OxigenBinomio(content);
-
-  } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION1){
-
+  if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION1){
     Serial.print("Topic: ");
     Serial.println(topicName);
 
     accion = charMsgToString(payload, length);
     Serial.println("Entramos en Accion1...");
     Serial.println(accion);
-    doBridgeAccion1("ON1");
+    doBridgeAccion(ALARM1);
 
   } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION2){
-
     Serial.print("Topic: ");
     Serial.println(topicName);
 
     accion = charMsgToString(payload, length);
     Serial.println("Entramos en Accion2...");
     Serial.println(accion);
-    doBridgeAccion1("ON2");
+    doBridgeAccion(ALARM2);
 
   } else if(topicName == TOPIC_BRIDGE_BINOMIO1_ACCION3){
-
     Serial.print("Topic: ");
     Serial.println(topicName);
 
     accion = charMsgToString(payload, length);
     Serial.println("Entramos en Accion3...");
     Serial.println(accion);
-    doBridgeAccion1("ON3");
+    doBridgeAccion(ALARM3);
   }
 
 }
@@ -147,7 +137,3 @@ void handleMqtt(){
 
 }  
 
-// A borrar
-void doEARAccion1(String value){
-    doBridgeAccion1(value);
-}  
